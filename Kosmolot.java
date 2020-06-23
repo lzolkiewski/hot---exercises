@@ -15,12 +15,12 @@ public class Kosmolot {
             try{
 //                Checking whether Y or N is passed as an argument
                 if(args[1].compareTo("N")!=0 && args[1].compareTo("Y")!=0){
-                    System.out.println("Does the spaceship have shield? ( N/Y ) Pass it as an argument java Kosmolot size Y/N");
+                    System.out.println("klops");
                     System.exit(0);
                 }
 //                Checking whether passed size belongs between the boundaries
                 if((spaceship_size = Integer.parseInt(args[0]))<1 || spaceship_size >75){
-                    System.out.println("Pass the value between <1,75>");
+                    System.out.println("klops");
                     System.exit(0);
                 }
 //               has_shield is gonna be true if Y is passed or false if not
@@ -29,11 +29,11 @@ public class Kosmolot {
                 display();
 //                Checking whether the value is an Integer
             }catch (NumberFormatException e){
-                System.out.println(args[0]+ " is not an integer");
+                System.out.println("klops");
             }
 //            In case no arguments are passed
         }else{
-            System.out.println("Err disappointed, pass (some value) and whether the spaceship has shield or not N/Y");
+            System.out.println("klops");
             System.exit(0);
         }
     }

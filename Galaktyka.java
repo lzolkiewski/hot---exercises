@@ -11,7 +11,6 @@ public class Galaktyka {
 
     public static void main(String[]args){
         Galaktyka galaxy = new Galaktyka(args);
-
     }
     
     public Galaktyka(String[]args){
@@ -26,12 +25,12 @@ public class Galaktyka {
 //                Checking whether Y or N is passed as an argument
                 if(args[1].compareTo("N")!=0 && args[1].compareTo("S")!=0 &&
                         args[1].compareTo("E")!=0 && args[1].compareTo("W")!=0){
-                    System.out.println("Pass correct orientation (N/S/E/W)");
+                    System.out.println("klops");
                     System.exit(0);
                 }
 //                Checking whether passed size belongs between the boundaries
                 if((telescope_size = Integer.parseInt(args[0]))<1 || telescope_size >10000){
-                    System.out.println("Pass the value between <1,10000>");
+                    System.out.println("klops");
                     System.exit(0);
                 }
 //               assign orientation in case everything is fine
@@ -39,15 +38,14 @@ public class Galaktyka {
 
 //                Checking whether the value is an Integer
             }catch (NumberFormatException e){
-                System.out.println(args[0]+ " is not an integer");
+                System.out.println("klops");
             }
 //            In case no arguments are passed
         }else{
-            System.out.println("Err disappointed, pass (some value <1,10000>) (orientation (N/S/E/W))");
+            System.out.println("klops");
             System.exit(0);
         }
     }
-
     public void create_galaxy() {
 //        initialize
         for(int i = 0; i<galaxy.length; i++)
@@ -79,7 +77,6 @@ public class Galaktyka {
             lastY-=2;
         }
     }
-
     public void create_path(){
         String[][]display_galaxy =new String[telescope_size+3][telescope_size+2];
         for (int i = 0; i<telescope_size+3; i++){
@@ -107,7 +104,7 @@ public class Galaktyka {
                 orientationW(display_galaxy);
                 break;
             default:
-                System.out.println("Something went wrong with orientation");
+                System.out.println("klops");
                 System.exit(0);
                 break;
         }
