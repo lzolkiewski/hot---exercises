@@ -5,9 +5,11 @@ public class Kosmolot {
     private Boolean has_shield = false;
 
     public static void main(String[] args) {
-        Kosmolot kosmolot = new Kosmolot();
+        Kosmolot kosmolot = new Kosmolot(args);
+    }
 
-        kosmolot.check_args(args);
+    public Kosmolot(String[]args){
+        check_args(args);
     }
 //    Method to check and set arguments that were passed to program
     public void check_args(String[]args){
@@ -43,11 +45,11 @@ public class Kosmolot {
         int subtraction = spaceship_size-2;
 
         for(int i = 0 ; i < spaceship_size*2-1; i++){
-            if(i <= spaceship_size-1){
+            if(i <= spaceship_size-1){ // till the middle part
                 for(int position = 0; position < spaceship_size*spaceship_size; position++){
                     if(position%spaceship_size<=i){
                         if((position==0 || (position==spaceship_size*spaceship_size-1)) && has_shield){
-                            spaceship += ">"; // setting the ion engines and sharp peak
+                            spaceship += ">"; // ion engines and sharp peak
                         }else {
                             if(has_shield && (position%spaceship_size==i) && (i != spaceship_size-1)){
                                 spaceship+="\\";// setting shield to fend of the meteorites
@@ -60,8 +62,7 @@ public class Kosmolot {
                     }
                 }
                 spaceship += "\n";
-//                    up till the middle part
-            } else {
+            } else { // till the end
                 for(int position = 0; position < spaceship_size*spaceship_size; position++){
                     if(position%spaceship_size<=subtraction){
                         if(position==0 && has_shield){
