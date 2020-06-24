@@ -10,6 +10,7 @@ public class Drwal {
     private String color;
     private int width;
     private int height;
+    String[][]loaded_array;
     private int file_height;
     private int file_width;
 
@@ -20,9 +21,9 @@ public class Drwal {
     public Drwal(String[]args) throws IOException {
         check_args(args);
         load_file();
-
+        check_position();
     }
-
+//    check if arguments given are correct
     public void check_args(String[]args){
         if(args.length==5){
             try{
@@ -59,6 +60,7 @@ public class Drwal {
             System.exit(0);
         }
     }
+//    get input file int an array
     public void load_file(){
 //        store input file into array list
         Scanner scanner = new Scanner(System.in);
@@ -75,83 +77,85 @@ public class Drwal {
         file_height=file.size();
         file_width=size;
 //        initialize file array
-        String[][]loaded_array = new String[file.size()][size];
+        loaded_array = new String[file.size()][size];
         for (int i = 0; i < file_height; i++) {
             for (int j = 0; j < file_width; j++) {
                 loaded_array[i][j] = String.valueOf(file.get(i).charAt(j));
             }
         }
-        paint(loaded_array);
+        get_array();
     }
-
-    public void paint(String[][]loaded_file){
+//    convert file into what we need
+    public void get_array(){
         String[][]array = new String[height][width];
-        for (int i = 0; i < height; i++) {
-            if (width >= 0) System.arraycopy(loaded_file[i], 0, array[i], 0, width);
-        }
-        find_corner(array);
-    }
-
-    public void find_corner(String[][]file_array){
-        if(file_array[yStart][xStart].compareTo(" ")!=0){
+        try {
+            for (int i = 0; i < height; i++) {
+                for (int j = 0; j < width; j++) {
+                    array[i][j] = loaded_array[i][j];
+                }
+            }
+            loaded_array=array;
+        }catch (ArrayIndexOutOfBoundsException e){
             System.out.println("klops");
             System.exit(0);
         }
-
-        while (true) {
-            if (!moveUp(file_array))
-                if (!moveLeft(file_array))
-                    if(!check_celling(file_array))
-                        break;
-        }
-        System.out.println(xStart+" "+yStart);
     }
-
-    public boolean check_celling(String[][]file_array){
-        for (int i = xStart; i<width-1; i++){
-            if(file_array[yStart-1][i].compareTo(" ")==0 && file_array[yStart][i+1].compareTo(" ")==0){
-                xStart=i;
-                return moveUp(file_array);
-            }
+//    check if starting point is valid
+    public void check_position(){
+        if(loaded_array[yStart][xStart].compareTo(" ")!=0){
+            System.out.println("klops");
+            System.exit(0);
         }
+        paint();
+    }
+//    paint the place
+    public void paint(){
+        // TODO: 24.06.2020 add traversing the table and painting the cells
+        display();
+    }
+//    display painted part
+    public void display(){
+        for (int i = 0; i < height; i++) {
+            for (int j = 0; j < width; j++) {
+                System.out.print(loaded_array[i][j]);
+            }
+            System.out.println();
+        }
+    }
+//    check celling / floor for holes
+    public boolean check_celling(){
+        for (int i=xStart; i<width; i++){
+//            if move right possible check above
+            if (move_right(i, yStart))
+//                if move upwards possible return true as celling has hole
+                if(move_up(i, yStart))
+                    return true;
+        }
+//        if reached the celling has no holes
         return false;
     }
-
-    public boolean moveUp(String[][]file_array){
-        if(yStart!=0){
-            if(file_array[yStart-1][xStart].compareTo(" ")==0){
-                yStart--;
-                return true;
-            }
+    public boolean check_floor(){
+        for(int i = xStart; i < width; i++){
+//            if possible to move right check underneath
+            if(move_right(i, yStart))
+//                if move down possible floor has holes
+                if (move_down(i, yStart))
+                    return true;
         }
+//        if reached floor has no holes
         return false;
     }
-    public boolean moveDown(String[][]file_array){
-        if(yStart!=file_height){
-            if(file_array[yStart+1][xStart].compareTo(" ")==0){
-                yStart++;
-                return true;
-            }
-        }
-        return false;
+//    check if move up / down / left / right is possible
+    public boolean move_up(int x, int y){
+        return loaded_array[y - 1][x].compareTo(" ") == 0 && y > 0;
     }
-    public boolean moveRight(String[][]file_array){
-        if(xStart!=file_width){
-            if(file_array[yStart][xStart+1].compareTo(" ")==0){
-                xStart++;
-                return true;
-            }
-        }
-        return false;
+    public boolean move_down(int x, int y){
+        return loaded_array[y + 1][x].compareTo(" ") == 0 && y < height;
     }
-    public boolean moveLeft(String[][]file_array){
-        if(xStart!=0){
-            if(file_array[yStart][xStart-1].compareTo(" ")==0){
-                xStart--;
-                return true;
-            }
-        }
-        return false;
+    public boolean move_left(int x, int y){
+        return loaded_array[y][x+1].compareTo(" ")==0 && x < width;
     }
-
+    public boolean move_right(int x, int y){
+        return loaded_array[y][x-1].compareTo(" ")==0 && x > 0;
+    }
 }

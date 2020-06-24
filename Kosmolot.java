@@ -5,13 +5,12 @@ public class Kosmolot {
     private Boolean has_shield = false;
 
     public static void main(String[] args) {
-        Kosmolot kosmolot = new Kosmolot(args);
+        new Kosmolot(args);
     }
-
     public Kosmolot(String[]args){
         check_args(args);
     }
-//    Method to check and set arguments that were passed to program
+//    Method to validate arguments given
     public void check_args(String[]args){
         if(args.length==2){
             try{
@@ -39,7 +38,7 @@ public class Kosmolot {
             System.exit(0);
         }
     }
-//    Method to display the spaceship
+//    Method to set up and display the spaceship
     public void display(){
         String spaceship = "";
         int subtraction = spaceship_size-2;

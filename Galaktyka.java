@@ -5,20 +5,22 @@ public class Galaktyka {
 
     private Integer telescope_size;
     private String orientation;
-    private Integer path=0;
+    private int path=0;
     private final String path_character=" ";
     private final String[][] galaxy = new String[10004][10004];
+    private String[][]display_galaxy;
 
     public static void main(String[]args){
-        Galaktyka galaxy = new Galaktyka(args);
+        new Galaktyka(args);
     }
-    
     public Galaktyka(String[]args){
         this.check_args(args);
         create_galaxy();
-        create_path();
+        count_path();
+        display_in_orientation();
+        System.out.println(path);
     }
-
+//    check validity of the arguments given
     public void check_args(String[] args){
         if(args.length==2){
             try{
@@ -46,8 +48,9 @@ public class Galaktyka {
             System.exit(0);
         }
     }
+//    create spiral in the galaxy array
     public void create_galaxy() {
-//        initialize
+//        initialize the galaxy with *
         for(int i = 0; i<galaxy.length; i++)
             for (int j = 0; j<galaxy.length; j++)
                 galaxy[i][j] = "*";
@@ -56,7 +59,7 @@ public class Galaktyka {
         int startX = 0, startY=1;
         int lastX = galaxy.length-1, lastY = galaxy.length-1;
         int firstX = 0, firstY = 2;
-
+//        circling creating the galaxy
         while (firstX<lastX || firstY<lastY){
             for(;startX<lastX; startX++){
                 galaxy[startY][startX]=path_character;
@@ -77,31 +80,34 @@ public class Galaktyka {
             lastY-=2;
         }
     }
-    public void create_path(){
-        String[][]display_galaxy =new String[telescope_size+3][telescope_size+2];
+//    count the path in galaxy seen in the telescope and get the visible galaxy
+    public void count_path(){
+        display_galaxy =new String[telescope_size+3][telescope_size+2];
+
         for (int i = 0; i<telescope_size+3; i++){
             for (int j = 0; j<telescope_size+2; j++) {
+//                getting visible galaxy
                 display_galaxy[i][j]=galaxy[(galaxy.length/2)-(telescope_size+3)/2+i][(galaxy.length/2)-(telescope_size+2)/2+j];
+//                counting the path
                 if(galaxy[(galaxy.length/2)-(telescope_size+3)/2+i][(galaxy.length/2)-(telescope_size+2)/2+j].compareTo(path_character)==0)
                     path++;
             }
         }
-        display_in_orientation(display_galaxy);
-        System.out.println(path);
     }
-    public void display_in_orientation(String[][]display_galaxy){
+//    choose orientation depending on the argument given
+    public void display_in_orientation(){
         switch (orientation){
             case "N":
-                orientationN(display_galaxy);
+                orientationN();
                 break;
             case "S":
-                orientationS(display_galaxy);
+                orientationS();
                 break;
             case "E":
-                orientationE(display_galaxy);
+                orientationE();
                 break;
             case "W":
-                orientationW(display_galaxy);
+                orientationW();
                 break;
             default:
                 System.out.println("klops");
@@ -109,8 +115,8 @@ public class Galaktyka {
                 break;
         }
     }
-
-    public void orientationN(String[][]display_galaxy){
+//    display the seen part of the galaxy in given orientation N / S / E / W
+    public void orientationN(){
         for (int i = 0; i<telescope_size+3; i++) {
             for (int j = 0; j < telescope_size + 2; j++) {
                 System.out.print(display_galaxy[i][j]);
@@ -118,7 +124,7 @@ public class Galaktyka {
             System.out.println();
         }
     }
-    public void orientationS(String[][]display_galaxy){
+    public void orientationS(){
         for (int i = 0; i<telescope_size+3; i++) {
             for (int j = 0; j < telescope_size + 2; j++) {
                 System.out.print(display_galaxy[telescope_size+2-i][telescope_size+1-j]);
@@ -126,7 +132,7 @@ public class Galaktyka {
             System.out.println();
         }
     }
-    public void orientationE(String[][]display_galaxy){
+    public void orientationE(){
         for (int i = 0; i<telescope_size+2; i++) {
             for (int j = 0; j < telescope_size + 3; j++) {
                 System.out.print(display_galaxy[j][telescope_size+1-i]);
@@ -134,7 +140,7 @@ public class Galaktyka {
             System.out.println();
         }
     }
-    public void orientationW(String[][]display_galaxy){
+    public void orientationW(){
         for (int i = 0; i<telescope_size+2; i++) {
             for (int j = 0; j < telescope_size + 3; j++) {
                 System.out.print(display_galaxy[telescope_size+2-j][i]);
@@ -142,5 +148,4 @@ public class Galaktyka {
             System.out.println();
         }
     }
-
 }
