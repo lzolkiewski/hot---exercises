@@ -67,7 +67,7 @@ public class Drwal {
             file.add(scanner.nextLine().substring(0, width+1));
         }
         scanner.close();
-        height = i-1;
+        height = i;
 //        initialize file array
         loaded_array = new String[height][width];
         for (i = 0; i < height; i++) {
@@ -88,10 +88,7 @@ public class Drwal {
     public void paint(){
 //        if floor has holes going down and painting else just paint last line
         while (true){
-        // System.out.println(xStart + "<x---y>" + yStart);
-        System.out.println(xStart + "<x----y>" + yStart);
         get_top_corner();
-        // System.out.println(xStart + "<x---y>" + yStart);
             if(check_floor()){
                 int x = xStart, y = yStart;
                 go_down();
@@ -138,10 +135,11 @@ public class Drwal {
 //        check floor
         for (;i<width; i++){
 //            if move right possible
-            if (move_right(i, yStart))
+            if (move_right(i, yStart)){
 //                if move down possible return true
                 if (move_down(i, yStart))
                     return true;
+            }else if(move_down(xStart, yStart))return true;
         }
         return false;
     }
