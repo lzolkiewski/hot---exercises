@@ -1,8 +1,4 @@
-package com.company;
-
 public class Galaktyka {
-    private static final String PATH = " ";
-
     private Integer telescope_size;
     private String orientation;
     private int path=0;

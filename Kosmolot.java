@@ -1,5 +1,3 @@
-package com.company;
-
 public class Kosmolot {
     private Integer spaceship_size;
     private Boolean has_shield = false;

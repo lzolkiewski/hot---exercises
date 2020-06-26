@@ -1,10 +1,9 @@
-package com.company;
-
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Drwal {
+    boolean first_move = true;
     private int xStart;
     private int yStart;
     private String color;
@@ -63,40 +62,19 @@ public class Drwal {
 //        store input file into array list
         Scanner scanner = new Scanner(System.in);
         ArrayList<String>file = new ArrayList<>();
-        while (scanner.hasNext()){
-            file.add(scanner.nextLine());
+        int i = 0;
+        for (; i<height && scanner.hasNext(); i++){
+            file.add(scanner.nextLine().substring(0, width+1));
         }
-//       find the biggest row
-        int size=0;
-        for (String element: file) {
-            if(element.length()>size)
-                size=element.length();
-        }
-        int file_height = file.size();
-        int file_width = size;
+        scanner.close();
+        height = i-1;
 //        initialize file array
-        loaded_array = new String[file.size()][size];
-        for (int i = 0; i < file_height; i++) {
-            for (int j = 0; j < file_width; j++) {
-                loaded_array[i][j] = String.valueOf(file.get(i).charAt(j));
-            }
+        loaded_array = new String[height][width];
+        for (i = 0; i < height; i++) {
+                String splt_str = String.valueOf(file.get(i));
+                loaded_array[i] = splt_str.split("");
         }
-        get_array();
-    }
-//    convert file into what we need
-    public void get_array(){
-        String[][]array = new String[height][width];
-        try {
-            for (int i = 0; i < height; i++) {
-                for (int j = 0; j < width; j++) {
-                    array[i][j] = loaded_array[i][j];
-                }
-            }
-            loaded_array=array;
-        }catch (ArrayIndexOutOfBoundsException e){
-            System.out.println("klops");
-            System.exit(0);
-        }
+        
     }
 //    check if starting point is valid
     public void check_position(){
@@ -108,10 +86,12 @@ public class Drwal {
     }
 //    paint the place
     public void paint(){
-//        going to the highest point (at least trying)
-        get_top_corner();
 //        if floor has holes going down and painting else just paint last line
         while (true){
+        // System.out.println(xStart + "<x---y>" + yStart);
+        System.out.println(xStart + "<x----y>" + yStart);
+        get_top_corner();
+        // System.out.println(xStart + "<x---y>" + yStart);
             if(check_floor()){
                 int x = xStart, y = yStart;
                 go_down();
@@ -124,7 +104,8 @@ public class Drwal {
 //        displaying the painting
         display();
     }
-//    display painted part
+
+    //    display painted part
     public void display(){
         for (int i = 0; i < height; i++) {
             for (int j = 0; j < width; j++) {
@@ -167,31 +148,31 @@ public class Drwal {
 //    check if move up / down / left / right is possible
     public boolean move_up(int x, int y){
         if (y>0)
-            return loaded_array[y - 1][x].compareTo(" ") == 0 && y > 0;
+            return loaded_array[y - 1][x].compareTo(" ") == 0;
         else
             return false;
     }
     public boolean move_down(int x, int y){
         if(y+1<height)
-            return loaded_array[y + 1][x].compareTo(" ") == 0 && y < height;
+            return loaded_array[y + 1][x].compareTo(" ") == 0;
         else
             return false;
     }
     public boolean move_left(int x, int y){
         if(x>0)
-            return loaded_array[y][x-1].compareTo(" ")==0 && x > 0;
+            return loaded_array[y][x-1].compareTo(" ")==0;
         else
             return false;
     }
     public boolean move_right(int x, int y){
         if(x+1<width)
-            return loaded_array[y][x+1].compareTo(" ")==0 && x < width;
+            return loaded_array[y][x+1].compareTo(" ")==0;
         else
             return false;
     }
 //    get corners
     public void move_to_left_corner(){
-        while (move_up(xStart, yStart) || move_left(xStart - 1, yStart)) {
+        while (move_up(xStart, yStart) || move_left(xStart-1, yStart)) {
             if (move_up(xStart, yStart)) yStart--;
             else if (move_left(xStart, yStart)){
                 xStart--;
@@ -211,12 +192,19 @@ public class Drwal {
     }
 //    supposedly going to top left corner in the marked place
     public void get_top_corner(){
+        if(first_move){
+            // making sure it goes to the left
+            move_to_left_corner();
+            first_move=!first_move;
+        }
+        // mainly usefull to peek all holes in the celling
         while (check_celling()){
             move_to_left_corner();
             move_to_right_corner();
+            move_to_left_corner();
         }
-        move_to_left_corner();
     }
+
 //    going down if floor has holes
     public void go_down(){
         if(check_floor()){
@@ -227,7 +215,6 @@ public class Drwal {
 //            move left border if move left possible
             while (move_left(xStart, yStart)) xStart--;
         }
-
     }
 //    filling the place given horizontally with color
     public void fill(int x, int y){
