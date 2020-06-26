@@ -139,7 +139,7 @@ public class Drwal {
 //                if move down possible return true
                 if (move_down(i, yStart))
                     return true;
-            }else if(move_down(xStart, yStart))return true;
+            }else if(move_down(xStart, yStart)) return true;
         }
         return false;
     }
