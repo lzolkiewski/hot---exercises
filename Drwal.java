@@ -145,7 +145,7 @@ public class Drwal {
     }
 //    check if move up / down / left / right is possible
     public boolean move_up(int x, int y){
-        if (y>0)
+        if (y>0&&y<height  && x>=0&& x<width)
             return loaded_array[y - 1][x].compareTo(" ") == 0;
         else
             return false;
